@@ -12,7 +12,9 @@ import com.example.bookfinder_android.presentation.navigation.AppNavGraph
 import com.example.bookfinder_android.presentation.screens.details.DetailsScreen
 import com.example.bookfinder_android.presentation.screens.home.HomeScreen
 import com.example.bookfinder_android.ui.theme.BookFinderAndroidTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

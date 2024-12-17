@@ -1,5 +1,6 @@
 package com.example.bookfinder_android.presentation.screens.home.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,14 +19,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil.compose.rememberAsyncImagePainter
+import com.example.bookfinder_android.R
 
 @Composable
-fun BookCard(title: String, author: String, imageRes: Int, onClick: () -> Unit) {
+fun BookCard(title: String, author: String, imageRes: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .width(180.dp)
@@ -33,14 +37,23 @@ fun BookCard(title: String, author: String, imageRes: Int, onClick: () -> Unit) 
             .padding(horizontal = 8.dp)
     ) {
         Image(
-            painter = painterResource(id = imageRes),
+            painter = rememberAsyncImagePainter(
+                model = imageRes,
+                error = painterResource(R.drawable.img),
+                onError = { Log.e("Coil", "Erro ao carregar imagem: $imageRes") },
+                onSuccess = { Log.d("Coil", "Imagem carregada com sucesso: $imageRes") }
+            )
+            ,
             contentDescription = null,
             modifier = Modifier
                 .width(140.dp)
                 .height(220.dp)
+                .clip(RoundedCornerShape(16.dp))
                 .align(Alignment.TopCenter)
                 .zIndex(1f)
         )
+        Log.d("BookCard", "Image URL: $imageRes")
+
 
         Card(
             onClick = { onClick()},
@@ -65,6 +78,7 @@ fun BookCard(title: String, author: String, imageRes: Int, onClick: () -> Unit) 
                     text = title,
                     fontSize = 14.sp,
                     color = Color.Black,
+                    maxLines = 1
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
