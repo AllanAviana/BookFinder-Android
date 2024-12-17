@@ -8,10 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.bookfinder_android.R
 
 @Composable
-fun BookList() {
+fun BookList(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -26,12 +27,14 @@ fun BookList() {
                 BookCard(
                     title = "O Vendedor de Sonhos",
                     author = "Augusto Cury",
-                    imageRes = R.drawable.img
+                    imageRes = R.drawable.img,
+                    onClick = { navController.navigate("details") }
                 )
                 BookCard(
                     title = "O Vendedor de Sonhos",
                     author = "Augusto Cury",
-                    imageRes = R.drawable.img
+                    imageRes = R.drawable.img,
+                    onClick = { navController.navigate("details") }
                 )
             }
         }

@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 
 @Composable
-fun BookCard(title: String, author: String, imageRes: Int) {
+fun BookCard(title: String, author: String, imageRes: Int, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .width(180.dp)
@@ -43,7 +43,7 @@ fun BookCard(title: String, author: String, imageRes: Int) {
         )
 
         Card(
-            onClick = { },
+            onClick = { onClick()},
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.8f)
