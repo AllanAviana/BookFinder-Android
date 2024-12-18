@@ -9,38 +9,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
-import com.example.bookfinder_android.R
 import com.example.bookfinder_android.data.model.Home
+import com.example.bookfinder_android.presentation.viewmodel.BookViewModel
 
 @Composable
-fun BookList(navController: NavHostController, data: Home) {
+fun BookList(navController: NavHostController, data: Home, bookViewModel: BookViewModel) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        data.presented.items?.chunked(2)!!.forEach { book ->
+        data.presented.items?.chunked(2)?.forEachIndexed { index, bookChunk ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .padding(vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 BookCard(
-                    title = book[0].volumeInfo.title,
-                    author = book[0].volumeInfo.authors!![0],
-                    imageRes = book[0].volumeInfo.imageLinks?.thumbnail?.replace("http://", "https://") ?: "",
-                    onClick = { navController.navigate("details") }
+                    title = bookChunk[0].volumeInfo.title,
+                    author = bookChunk[0].volumeInfo.authors?.getOrNull(0) ?: "Unknown",
+                    imageRes = bookChunk[0].volumeInfo.imageLinks?.thumbnail?.replace("http://", "https://") ?: "",
+                    onClick = { navController.navigate("details") },
+                    bookViewModel = bookViewModel,
+                    item = bookChunk[0]
                 )
-                BookCard(
-                    title = book[1].volumeInfo.title,
-                    author = book[1].volumeInfo.authors!![0],
-                    imageRes = book[1].volumeInfo.imageLinks?.thumbnail?.replace("http://", "https://") ?: "",
-                    onClick = { navController.navigate("details") }
-                )
+
+                if (bookChunk.size > 1) {
+                    BookCard(
+                        title = bookChunk[1].volumeInfo.title,
+                        author = bookChunk[1].volumeInfo.authors?.getOrNull(0) ?: "Unknown",
+                        imageRes = bookChunk[1].volumeInfo.imageLinks?.thumbnail?.replace("http://", "https://") ?: "",
+                        onClick = { navController.navigate("details") },
+                        bookViewModel = bookViewModel,
+                        item = bookChunk[1]
+                    )
+                }
             }
         }
-
-
     }
 }

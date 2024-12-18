@@ -21,15 +21,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.rememberAsyncImagePainter
 import com.example.bookfinder_android.R
+import com.example.bookfinder_android.data.model.Item
+import com.example.bookfinder_android.presentation.viewmodel.BookViewModel
 
 @Composable
-fun BookCard(title: String, author: String, imageRes: String, onClick: () -> Unit) {
+fun BookCard(
+    title: String,
+    author: String,
+    imageRes: String,
+    onClick: () -> Unit,
+    bookViewModel: BookViewModel,
+    item: Item
+) {
     Box(
         modifier = Modifier
             .width(180.dp)
@@ -50,13 +60,16 @@ fun BookCard(title: String, author: String, imageRes: String, onClick: () -> Uni
                 .height(220.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .align(Alignment.TopCenter)
-                .zIndex(1f)
+                .zIndex(1f),
+            contentScale = ContentScale.FillBounds
         )
         Log.d("BookCard", "Image URL: $imageRes")
 
-
         Card(
-            onClick = { onClick()},
+            onClick = {
+                bookViewModel.updateDetails(item)
+                onClick()
+                      },
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.8f)

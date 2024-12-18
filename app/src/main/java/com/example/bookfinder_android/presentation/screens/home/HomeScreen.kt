@@ -65,7 +65,7 @@ fun HomeSuccess(navController: NavHostController, bookViewModel: BookViewModel, 
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            BookList(navController, data)
+            BookList(navController, data, bookViewModel)
         }
     }
 }

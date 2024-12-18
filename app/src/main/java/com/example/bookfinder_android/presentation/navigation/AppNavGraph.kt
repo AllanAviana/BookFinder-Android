@@ -22,7 +22,7 @@ fun AppNavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
         composable(Routes.Details.route) {
-            DetailsScreen(navController)
+            DetailsScreen(navController, bookViewModel)
         }
     }
 }

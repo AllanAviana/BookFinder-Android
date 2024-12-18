@@ -1,6 +1,6 @@
 package com.example.bookfinder_android.presentation.screens.details
 
-import android.util.Log
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,17 +37,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.bookfinder_android.R
+import coil.compose.rememberAsyncImagePainter
+import com.example.bookfinder_android.data.model.Details
+import com.example.bookfinder_android.data.model.DetailsUiState
 import com.example.bookfinder_android.presentation.screens.details.components.AnimatedTabBar
 import com.example.bookfinder_android.presentation.screens.details.components.Description
 
+import com.example.bookfinder_android.presentation.viewmodel.BookViewModel
+
 @Composable
-fun DetailsScreen(navController: NavHostController) {
+fun DetailsScreen(navController: NavHostController, bookViewModel: BookViewModel) {
+   val detailsUiState by bookViewModel.detailsUiState.collectAsState()
+
+    when(detailsUiState){
+        is DetailsUiState.Loading -> DetailsLoading()
+        is DetailsUiState.Success -> DetailsSuccess(navController, bookViewModel, (detailsUiState as DetailsUiState.Success<Details>).data)
+        is DetailsUiState.Error -> DetailsError()
+    }
+}
+
+@Composable
+fun DetailsError() {
+}
+
+@Composable
+fun DetailsLoading() {
+}
+
+@Composable
+fun DetailsSuccess(navController: NavHostController, bookViewModel: BookViewModel, data: Details) {
     var selectedTab by remember { mutableStateOf(0) }
 
     Column(
@@ -68,10 +90,8 @@ fun DetailsScreen(navController: NavHostController) {
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
                 ) {
-                    Log.d("DetailsScreen", "Arrow clicked")
                     navController.navigate("home")
                 }
-
         )
         Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
             Box(
@@ -107,9 +127,9 @@ fun DetailsScreen(navController: NavHostController) {
                     }
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.img_2),
+                    painter = rememberAsyncImagePainter(model = data.imageRes),
                     contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
 
@@ -130,7 +150,7 @@ fun DetailsScreen(navController: NavHostController) {
                         horizontalArrangement = Arrangement.Start
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.img_2),
+                            painter = rememberAsyncImagePainter(model = data.imageRes),
                             contentDescription = null,
                             modifier = Modifier
                                 .width(88.dp)
@@ -144,13 +164,13 @@ fun DetailsScreen(navController: NavHostController) {
                             verticalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Text(
-                                text = "20 Mar 2021",
+                                text = data.date,
                                 color = Color.Gray,
                                 fontSize = 14.sp
                             )
-                            Text(text = "O vendedor de sonho",)
+                            Text(text = data.title, fontSize = 14.sp,)
                             Text(
-                                text = "Augusto Cury",
+                                text = data.author,
                                 color = Color.Gray,
                                 fontSize = 14.sp
                             )
@@ -166,10 +186,11 @@ fun DetailsScreen(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    Description(selectedTab)
+                    Description(selectedTab, data)
 
                 }
             }
         }
     }
+
 }

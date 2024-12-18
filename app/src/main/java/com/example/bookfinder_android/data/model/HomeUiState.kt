@@ -16,6 +16,10 @@ data class Home(
         kind = "",
         totalItems = 0
     ),
+    val scienceFiction: BooksResponse = BooksResponse(
+        kind = "",
+        totalItems = 0
+    ),
     val presented: BooksResponse = BooksResponse(
         kind = "",
         totalItems = 0
