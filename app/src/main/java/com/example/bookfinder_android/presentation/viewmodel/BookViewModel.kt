@@ -43,6 +43,9 @@ class BookViewModel @Inject constructor(
 
     suspend fun getBooks() {
         val genders = listOf("horror", "romance", "Fiction")
+
+        _homeUiState.value = HomeUiState.Loading
+        delay(10000)
         var currenState = Home()
         genders.forEach { gender ->
             _books.value = bookRepository.getBooks(gender)

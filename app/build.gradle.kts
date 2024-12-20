@@ -60,6 +60,8 @@ android {
 
 dependencies {
     implementation("androidx.browser:browser:1.5.0")
+    implementation ("com.github.MahboubehSeyedpour:jetpack-loading:1.1.0")
+    implementation ("com.google.accompanist:accompanist-placeholder-material3:0.31.5-beta")
 
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")

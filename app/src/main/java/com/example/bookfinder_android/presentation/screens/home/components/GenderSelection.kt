@@ -18,10 +18,9 @@ fun GenderSelection() {
         fontSize = 20.sp,
         color = Color(0xFF1E64C3)
     )
-
     Row(
         modifier = Modifier
-            .fillMaxWidth(0.95f)
+            .fillMaxWidth()
             .padding(vertical = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

@@ -16,16 +16,13 @@ import com.example.bookfinder_android.presentation.viewmodel.BookViewModel
 fun BookList(navController: NavHostController, data: Home, bookViewModel: BookViewModel) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         data.presented.items?.chunked(2)?.forEachIndexed { index, bookChunk ->
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            )  {
                 BookCard(
                     title = bookChunk[0].volumeInfo.title,
                     author = bookChunk[0].volumeInfo.authors?.getOrNull(0) ?: "Unknown",
